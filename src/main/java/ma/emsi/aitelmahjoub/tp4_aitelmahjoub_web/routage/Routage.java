@@ -43,7 +43,7 @@ public class Routage {
 
     public static void main(String[] args) {
         configureLogger();
-        System.out.println("=== Test 3 : Routage ===");
+        System.out.println("===  Routage ===");
 
         EmbeddingModel embeddingModel = new AllMiniLmL6V2EmbeddingModel();
 
