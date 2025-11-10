@@ -6,7 +6,10 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Service d'accès centralisé au modèle de langage Gemini via LangChain4j.
@@ -33,13 +36,30 @@ public class LlmClient {
         ChatModel model = GoogleAiGeminiChatModel.builder()
                 .apiKey(apiKey)
                 .modelName("gemini-2.5-flash")
+                .logRequestsAndResponses(false)
+                .temperature(0.2)
                 .build();
 
        this.chatMemory = MessageWindowChatMemory.withMaxMessages(10);
         this.assistant = AiServices.builder(Assistant.class)
                 .chatModel(model)
                 .chatMemory(chatMemory)
-                .build();
+                    .build();
+
+            // try to create a RAG retriever and, if available, rebuild assistant with it
+            try {
+                EmbeddingStoreContentRetriever retriever = RagService.createRetriever();
+                if (retriever != null) {
+                    this.assistant = AiServices.builder(Assistant.class)
+                            .chatModel(model)
+                            .chatMemory(chatMemory)
+                            .contentRetriever(retriever)
+                            .build();
+                }
+            } catch (Throwable t) {
+                // If anything goes wrong, keep the non-RAG assistant. Log at debug level.
+                Logger.getLogger(LlmClient.class.getName()).log(Level.FINE, "RAG not enabled: {0}", t.toString());
+            }
     }
 
 
