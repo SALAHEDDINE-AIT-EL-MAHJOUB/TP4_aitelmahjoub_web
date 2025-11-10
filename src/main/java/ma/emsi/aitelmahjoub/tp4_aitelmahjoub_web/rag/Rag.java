@@ -1,9 +1,6 @@
-package ma.emsi.aitelmahjoub.tp4_aitelmahjoub_web.Rag;
+package ma.emsi.aitelmahjoub.tp4_aitelmahjoub_web.rag;
 
 import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
-import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
@@ -15,7 +12,7 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import ma.emsi.aitelmahjoub.tp4_aitelmahjoub_web.llm.Assistant;
-import dev.langchain4j.data.document.Metadata;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.io.File;
